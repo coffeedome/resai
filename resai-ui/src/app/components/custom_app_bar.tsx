@@ -19,10 +19,7 @@ export default function CustomAppBar() {
       <AppBarSection>
         <div className="d-flex flex-row">
           <Button className="m-2">
-            <Link
-              href="/chatui"
-              className="text-decoration-none text-black fs-3"
-            >
+            <Link href="/" className="text-decoration-none text-black fs-3">
               Chat Ui
             </Link>
           </Button>

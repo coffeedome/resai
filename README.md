@@ -28,3 +28,28 @@ curl -X POST http://localhost:5001/anonymize -H "Content-type: application/json"
 # Arize
 
 Reference: https://docs.arize.com/phoenix/deployment/docker
+
+# Steps:
+
+1. Deploy terraform
+
+```
+cd terraform
+terraform init
+terraform apply
+```
+
+2. Grab the api_url terraform output. For example:
+
+```
+api_url = "https://jr4ql74nok.execute-api.us-west-2.amazonaws.com/prod"
+```
+
+Now call the resumes endpoint with GET:
+https://jr4ql74nok.execute-api.us-west-2.amazonaws.com/prod/resumes
+
+1. Upload a resume or set of resumes to S3
+
+```
+https://jr4ql74nok.execute-api.us-west-2.amazonaws.com
+```
