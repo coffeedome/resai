@@ -48,8 +48,19 @@ api_url = "https://jr4ql74nok.execute-api.us-west-2.amazonaws.com/prod"
 Now call the resumes endpoint with GET:
 https://jr4ql74nok.execute-api.us-west-2.amazonaws.com/prod/resumes
 
+curl -X OPTIONS "https://vuf0b77cp2.execute-api.us-west-2.amazonaws.com/prod/resumes" \
+-H "Origin: http://localhost:3000" \
+-H "Access-Control-Request-Method: POST" \
+-H "Access-Control-Request-Headers: Content-Type, Authorization"
+
 1. Upload a resume or set of resumes to S3
 
 ```
 https://jr4ql74nok.execute-api.us-west-2.amazonaws.com
 ```
+
+Errors List:
+(142e1846-c13e-4829-825f-d9750f52869a) Execution failed due to configuration error: Invalid permissions on Lambda function
+The API with ID d3mcwv9k17 doesn’t include a resource with path /resumes having an integration arn:aws:lambda:us-west-2:767398066659:function:resumes-api on the ANY method.
+
+(5717985c-437f-4fee-bfd9-f7a4211c8e87) Lambda execution failed with status 200 due to customer function error: Expecting value: line 1 column 1 (char 0). Lambda request id: 72e00b91-4e96-4ef9-a66f-d9a7bc34acaf

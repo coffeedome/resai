@@ -83,7 +83,7 @@ resource "aws_api_gateway_rest_api" "app" {
 
 resource "aws_api_gateway_resource" "resumes" {
   parent_id   = aws_api_gateway_rest_api.app.root_resource_id
-  path_part   = "resumes"
+  path_part   = "{proxy+}"
   rest_api_id = aws_api_gateway_rest_api.app.id
 }
 
@@ -93,6 +93,78 @@ resource "aws_api_gateway_method" "resumes_any_method" {
   resource_id   = aws_api_gateway_resource.resumes.id
   rest_api_id   = aws_api_gateway_rest_api.app.id
 }
+
+resource "aws_api_gateway_method" "resumes_options_method" {
+  authorization = "NONE"
+  http_method   = "OPTIONS"
+  resource_id   = aws_api_gateway_resource.resumes.id
+  rest_api_id   = aws_api_gateway_rest_api.app.id
+}
+
+
+resource "aws_api_gateway_method_response" "options_method_response" {
+  rest_api_id = aws_api_gateway_rest_api.app.id
+  resource_id = aws_api_gateway_resource.resumes.id
+  http_method = aws_api_gateway_method.resumes_options_method.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "options_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.app.id
+  resource_id = aws_api_gateway_resource.resumes.id
+  http_method = aws_api_gateway_method.resumes_options_method.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,Authorization'",
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,OPTIONS,PUT,DELETE'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.options_method_response,
+    aws_api_gateway_integration.options_integration
+  ]
+}
+
+# Method response for ANY method
+resource "aws_api_gateway_method_response" "any_method_response" {
+  rest_api_id = aws_api_gateway_rest_api.app.id
+  resource_id = aws_api_gateway_resource.resumes.id
+  http_method = aws_api_gateway_method.resumes_any_method.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+# Integration response for ANY method
+resource "aws_api_gateway_integration_response" "any_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.app.id
+  resource_id = aws_api_gateway_resource.resumes.id
+  http_method = aws_api_gateway_method.resumes_any_method.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,Authorization'",
+    "method.response.header.Access-Control-Allow-Methods" = "'POST,GET,OPTIONS,PUT,DELETE'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [
+    aws_api_gateway_method_response.any_method_response
+  ]
+}
+
 
 resource "aws_api_gateway_integration" "integration" {
   rest_api_id             = aws_api_gateway_rest_api.app.id
@@ -104,10 +176,19 @@ resource "aws_api_gateway_integration" "integration" {
   # credentials             = aws_iam_role.apigw_execution_role.arn //TODO: review cause for 500
 }
 
+resource "aws_api_gateway_integration" "options_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.app.id
+  resource_id             = aws_api_gateway_resource.resumes.id
+  http_method             = aws_api_gateway_method.resumes_options_method.http_method
+  integration_http_method = "OPTIONS"
+  type                    = "MOCK"
+}
+
 # Deploy API Gateway
 resource "aws_api_gateway_deployment" "deployment" {
   depends_on = [
     aws_api_gateway_integration.integration,
+    aws_api_gateway_integration.options_integration
   ]
   rest_api_id = aws_api_gateway_rest_api.app.id
 }
@@ -128,6 +209,8 @@ resource "aws_api_gateway_method_settings" "path_specific" {
     metrics_enabled    = true
     data_trace_enabled = true
   }
+
+  depends_on = [aws_api_gateway_account.account]
 }
 
 

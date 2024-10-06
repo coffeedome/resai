@@ -1,4 +1,5 @@
 import os
+import json
 import base64
 import boto3
 from aws_lambda_powertools import Logger
@@ -34,10 +35,29 @@ def upload_file():
         # Upload the file to S3
         s3_client.put_object(Bucket=bucket_name, Key=file_name, Body=file_data)
 
-        return {"message": f"File {file_name} uploaded successfully"}
+        res = {"message": f"File {file_name} uploaded successfully"}
+
+        return {
+            "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization",
+                "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+            },
+            "body": json.dumps(res),
+        }
 
     except Exception as e:
-        return {"message": f"File upload failed: {str(e)}"}, 500
+        res = {"error": f"{e}"}
+        return {
+            "statusCode": 400,
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization",
+                "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+            },
+            "body": json.dumps(res),
+        }
 
 
 @app.get("/resumes")

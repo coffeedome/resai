@@ -1,6 +1,6 @@
-aws-lambda-powertools==2.43.1
-boto3==1.35.24
-botocore==1.35.24
+aws-lambda-powertools==3.0.0
+boto3==1.35.34
+botocore==1.35.34
 jmespath==1.0.1
 python-dateutil==2.9.0.post0
 s3transfer==0.10.2
