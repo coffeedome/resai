@@ -64,3 +64,6 @@ Errors List:
 The API with ID d3mcwv9k17 doesn’t include a resource with path /resumes having an integration arn:aws:lambda:us-west-2:767398066659:function:resumes-api on the ANY method.
 
 (5717985c-437f-4fee-bfd9-f7a4211c8e87) Lambda execution failed with status 200 due to customer function error: Expecting value: line 1 column 1 (char 0). Lambda request id: 72e00b91-4e96-4ef9-a66f-d9a7bc34acaf
+
+uploading files to s3 via apigw:
+https://repost.aws/knowledge-center/api-gateway-upload-image-s3

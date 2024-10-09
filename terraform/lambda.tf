@@ -30,6 +30,7 @@ resource "aws_lambda_function" "resumes" {
   role          = aws_iam_role.aws_lambda_execution_role.arn
   handler       = "resumes_api.app.lambda_handler"
   runtime       = "python3.11"
+  architectures = ["arm64"]
 
   memory_size = 128
   timeout     = 30
