@@ -1,6 +1,6 @@
 # S3 Bucket for uploads
 resource "aws_s3_bucket" "resumes_bucket" {
-  bucket = "aurora-resumes-s4567"
+  bucket = "aurora-resumes-s45678"
 }
 
 resource "aws_s3_bucket_policy" "resumes_bucket" {
