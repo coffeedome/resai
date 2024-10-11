@@ -18,7 +18,7 @@ const DATA_ITEM_KEY = "ProductID";
 const SELECTED_FIELD = "selected";
 const idGetter = getter(DATA_ITEM_KEY);
 
-const JobManager = () => {
+const AnalysisManager = () => {
   const [data, setData] = React.useState<Product[]>(
     products.map((dataItem: Product) =>
       Object.assign({ selected: false }, dataItem)
@@ -78,4 +78,4 @@ const JobManager = () => {
   );
 };
 
-export default JobManager;
+export default AnalysisManager;

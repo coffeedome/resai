@@ -14,6 +14,7 @@ import {
 import { Splitter, SplitterOnChangeEvent } from "@progress/kendo-react-layout";
 import ResumeManager from "./components/ResumeManager/ResumeManager";
 import JobManager from "./components/JobManager/JobManager";
+import AnalysisManager from "./components/AnalysisManager/AnalysisManager";
 
 const user = {
   id: 1,
@@ -104,7 +105,7 @@ const App = () => {
           orientation={"vertical"}
           onChange={onNestedChange}
         >
-          <div className="pane-content">
+          <div className="pane-content m-3">
             <h3 className="m-3">Job Postings Selector</h3>
             <JobManager />
           </div>
@@ -113,9 +114,9 @@ const App = () => {
             <ResumeManager />
           </div>
         </Splitter>
-        <div className="pane-content">
+        <div className="pane-content m-3">
           <h3 className="m-3">My Analyses</h3>
-          <p>Resizable only.</p>
+          <AnalysisManager />
         </div>
         <div className="pane-content">
           <h3 className="m-3">Search With Natural Language</h3>
